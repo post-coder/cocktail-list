@@ -21,7 +21,6 @@ class CocktailSeeder extends Seeder
             $data = json_decode($data)->drinks[0];
             $cocktail = new Cocktail();
             $cocktail->name = $data->strDrink;
-            $cocktail->description = strip_tags($data->strInstructionsIT);
             $cocktail->image = $data->strDrinkThumb;
             $cocktail->istructions = strip_tags($data->strInstructionsIT);
 

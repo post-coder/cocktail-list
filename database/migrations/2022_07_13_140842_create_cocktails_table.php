@@ -15,10 +15,9 @@ class CreateCocktailsTable extends Migration
     {
         Schema::create('cocktails', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('image');
-            $table->text('istructions')->nullable();
+            $table->string('name', 255);
+            $table->string('image', 255)->nullable();
+            $table->text('istructions', 65535)->nullable();
             $table->timestamps();
         });
     }

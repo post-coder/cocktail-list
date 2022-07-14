@@ -9,6 +9,13 @@ body
 
   font-family: 'Montserrat', sans-serif
 
+#logo
+  text-align: center
+  padding: 2em 0
+  margin-bottom: 2em
+  img
+    height: 90px
+
 .container
   max-width: 1000px
   margin-left: auto
@@ -28,8 +35,8 @@ body
 .cocktail
   display: flex
   flex-direction: row
-
   justify-content: space-between
+
 
   width: 100%
 
@@ -43,6 +50,8 @@ body
     justify-content: center
 
     flex-grow: 1
+
+    width: 50%
 
     padding: 0 2em
 
@@ -69,9 +78,101 @@ body
       border-radius: 4px
       border-bottom: solid 1px transparentize($primary, .7)
 
-    
 
   .cocktail-image
+    position: relative
     width: 50%
-
     box-shadow: 8px 12px 16px rgba(0,0,0,.5)
+    
+    img
+      width: 100%
+
+    .edit-btn-overlay
+      position: absolute
+
+      display: flex
+      align-items: center
+      justify-content: center
+
+      top: 0
+      left: 0
+
+      width: 100%
+      height: 100%
+
+      color: white!important
+      text-decoration: none!important
+
+      background-color: rgba(0,0,0,.6)
+
+      opacity: 0
+
+      transition: opacity .3s
+
+      &:hover
+        opacity: 1
+
+
+      
+
+
+#add-cocktail-btn
+  display: flex
+  align-items: center
+  justify-content: center
+
+  position: fixed
+
+  bottom: 30px
+  right: 30px
+
+  width: 60px
+  height: 60px
+
+  opacity: .6
+
+  font-size: 2.6em
+  font-weight: bold
+
+  border-radius: 50%
+
+  background-color: rgba(0,0,0,.6)
+
+  color: $primary
+  text-decoration: none!important
+  text-align: center
+
+  transition: opacity .3s
+
+  &:hover
+    opacity: 1
+
+  span
+    line-height: .5em
+    display: inline-block
+
+
+#cocktail-form
+
+  a
+    display: inline-block
+    color: white!important
+
+    opacity: .8
+    
+    margin-bottom: .6em  
+  
+  input
+    display: block
+  label
+    display: block
+
+  select
+    height: 300px
+
+  button[type="submit"]
+    background-color: $primary
+    border-color: darken($primary, .4)
+
+
+

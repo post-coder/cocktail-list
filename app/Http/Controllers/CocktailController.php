@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cocktail;
+use App\Ingredient;
 use Illuminate\Http\Request;
 
 class CocktailController extends Controller
@@ -14,7 +15,8 @@ class CocktailController extends Controller
      */
     public function index()
     {
-        $cocktails = Cocktail::all();
+        $cocktails = Cocktail::all()->sortByDesc('id');
+
         return view('cocktail.index', compact('cocktails'));
     }
 
@@ -25,7 +27,9 @@ class CocktailController extends Controller
      */
     public function create()
     {
-        //
+        $ingredients = Ingredient::all();
+
+        return view('cocktail.form', compact('ingredients'));
     }
 
     /**
@@ -36,18 +40,18 @@ class CocktailController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        // $request->validate($this->getValidationRules());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Cocktail  $cocktail
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Cocktail $cocktail)
-    {
-        //
+        $data = $request->all();
+        $cocktail = new Cocktail();
+        $cocktail->fill($data);
+        $cocktail->save();
+
+        if(isset($data['ingredients'])) {
+            $cocktail->ingredients()->sync($data['ingredients']);
+        }
+        
+        return redirect()->route('cocktails.index');
     }
 
     /**
@@ -56,9 +60,12 @@ class CocktailController extends Controller
      * @param  \App\Cocktail  $cocktail
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cocktail $cocktail)
+    public function edit($id)
     {
-        //
+        $cocktail    = Cocktail::findOrFail($id);
+        $ingredients = Ingredient::all();
+
+        return view('cocktail.form', compact('cocktail', 'ingredients'));
     }
 
     /**
@@ -68,9 +75,22 @@ class CocktailController extends Controller
      * @param  \App\Cocktail  $cocktail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cocktail $cocktail)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate($this->getValidationRules());
+
+        $data     = $request->all();
+        $cocktail = Cocktail::findOrFail($id);
+
+        $cocktail->update($data);
+
+        if(isset($data['ingredients'])) {
+            $cocktail->ingredients()->sync($data['ingredients']);
+        } else {
+            $cocktail->ingredients()->sync([]);
+        }
+
+        return redirect()->route('cocktails.index');
     }
 
     /**
@@ -79,8 +99,22 @@ class CocktailController extends Controller
      * @param  \App\Cocktail  $cocktail
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cocktail $cocktail)
+    public function destroy(Cocktail $id)
     {
-        //
+        $cocktail = Cocktail::findOrFail($id);
+        $cocktail->ingredients()->sync([]);
+        $cocktail->delete();
+
+        return redirect()->route('cocktails.index');
+    }
+
+    private function getValidationRules() {
+
+        return [
+            'name'        => 'required|max:255',
+            'image'       => 'nullable|max:30000',
+            'istructions' => 'nullable|max:30000',
+            'ingredients' => 'nullable|exists:ingredients,id'
+        ];
     }
 }

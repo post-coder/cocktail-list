@@ -11,7 +11,7 @@
               <strong>{{ $cocktail->name }}</strong>
             </div>
             <div class="cocktail-istructions">
-              <small>Istruzioni</small>
+              <small>Preparazione</small>
               {{ $cocktail->istructions }}
             </div>
             <div class="cocktail-ingredients">
@@ -21,7 +21,13 @@
               @endforeach
             </div>
           </div>
-          <img class="cocktail-image" src="{{ $cocktail->image }}" alt="">
+          <div class="cocktail-image">  
+            <img src="{{ $cocktail->image }}" alt="">
+            <a href="{{ route('cocktails.edit', $cocktail) }}" class="edit-btn-overlay">
+              <span>Modifica</span>
+            </a>
+          </div>
+
         </li>
           
       @endforeach    
@@ -29,4 +35,10 @@
     </ul>
     
   </div>
+
+  <a id="add-cocktail-btn" href="{{ route('cocktails.create') }}">
+    <span>
+      +
+    </span>
+  </a>
 @endsection
